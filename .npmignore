@@ -1,0 +1,8 @@
+.*
+*.log
+*.lock
+*.spec.js
+coverage
+src
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,18 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker-compose run --rm lib cc-test-reporter before-build
+  - docker-compose run --rm lib yarn install
+  - docker-compose run --rm lib yarn test --coverage --forceExit --runInBand --no-cache
+  - docker-compose run --rm lib yarn build
+  - docker-compose run --rm lib cc-test-reporter after-build --exit-code 0
+
+deploy:
+  provider: npm
+  email: "fabio@elizandro.com.br"
+  api_key: $NPM_TOKEN
+  on:
+    branch: master
