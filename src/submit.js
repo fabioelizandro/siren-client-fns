@@ -1,4 +1,4 @@
-module.exports = fetch => actionTemplate => {
+module.exports = resource => actionTemplate => {
   const { href, method, type, fields } = actionTemplate;
 
   return (payload) => {
@@ -8,10 +8,10 @@ module.exports = fetch => actionTemplate => {
       [field.name]: payload[field.name]
     }), initialBody);
 
-    return fetch(href, {
+    return resource(href, {
       method,
       body: JSON.stringify(body),
       headers: { 'Content-Type': type }
-    }).then(response => response.json());
+    });
   };
 };

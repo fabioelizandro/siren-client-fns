@@ -1,17 +1,9 @@
 const submit = require('./submit');
 
-const createFetch = () => {
-  return jest.fn(() => Promise.resolve({
-    json: () => Promise.resolve({
-      class: ['my-siren-resource']
-    })
-  }));
-};
-
 describe('submit', () => {
   it('submits request based upon action template', async () => {
     expect.assertions(1);
-    const fetch = createFetch();
+    const resource = jest.fn();
     const actionTemplate = {
       method: 'POST',
       href: 'http://example.com',
@@ -22,9 +14,9 @@ describe('submit', () => {
       ]
     };
 
-    submit(fetch)(actionTemplate)({ id: 1, name: 'foo' });
+    submit(resource)(actionTemplate)({ id: 1, name: 'foo' });
 
-    expect(fetch).toHaveBeenCalledWith('http://example.com', {
+    expect(resource).toHaveBeenCalledWith('http://example.com', {
       method: 'POST',
       body: JSON.stringify({ id: 1, name: 'foo' }),
       headers: { 'Content-Type': 'application/json' }
@@ -33,7 +25,7 @@ describe('submit', () => {
 
   it('ignores any extra field', async () => {
     expect.assertions(1);
-    const fetch = createFetch();
+    const resource = jest.fn();
     const actionTemplate = {
       method: 'POST',
       href: 'http://example.com',
@@ -43,19 +35,22 @@ describe('submit', () => {
       ]
     };
 
-    submit(fetch)(actionTemplate)({
+    submit(resource)(actionTemplate)({
       id: 1,
       extraField: 'extra value'
     });
 
-    expect(fetch).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+    expect(resource).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
       body: JSON.stringify({ id: 1 }),
     }));
   });
 
   it('returns an resource', async () => {
     expect.assertions(1);
-    const fetch = createFetch();
+    const resource = jest.fn(() => Promise.resolve({
+      class: ['my-siren-resource']
+    }));
+
     const actionTemplate = {
       method: 'POST',
       href: 'http://example.com',
@@ -65,7 +60,7 @@ describe('submit', () => {
       ]
     };
 
-    const response = await submit(fetch)(actionTemplate)({
+    const response = await submit(resource)(actionTemplate)({
       id: 1
     });
 

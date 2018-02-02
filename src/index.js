@@ -8,7 +8,7 @@ module.exports = fetch => {
     resource: resource(fetch),
     followEntity: followEntity(resource(fetch)),
     actionTemplate,
-    submit: submit(fetch),
-    createAction: actionName => sirenResource => submit(fetch)(actionTemplate(actionName)(sirenResource))
+    submit: submit(resource(fetch)),
+    createAction: actionName => sirenResource => submit(resource(fetch))(actionTemplate(actionName)(sirenResource))
   };
 };
