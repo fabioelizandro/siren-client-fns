@@ -10,7 +10,7 @@
 
 ## How to use
 
-### Getting a template action
+### Creating an action
 
 ```js
 const fetch = require('node-fetch');
@@ -18,7 +18,11 @@ const siren = require('siren-client-fns');
 const sirenClient = siren(fetch);
 const url = 'http://example.com/my-siren-endpoint';
 
-const templateAction = await sirenClient.resource(url)
+const myAction = await sirenClient.resource(url)
     .then(sirenClient.followEntity(['my-sub-entiy']))
-    .then(sirenClient.actionTemplate('my-action'));
+    .then(sirenClient.createAction('my-action-name'));
+
+const sirenResource = await myAction({
+    myPropertyPayload: 'myValuePayload'
+});
 ```

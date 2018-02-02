@@ -22,6 +22,6 @@ describe('resource', () => {
     const response = await resource(fetch)('http://example.com');
     expect(response).toEqual({
       class: ['my-siren-resource']
-    })
+    });
   });
 });
