@@ -14,7 +14,7 @@
 
 ```js
 const fetch = require('node-fetch');
-const siren = require('./siren');
+const siren = require('siren-client-fns');
 const sirenClient = siren(fetch);
 const url = 'http://example.com/my-siren-endpoint';
 
@@ -22,4 +22,3 @@ const templateAction = await sirenClient.resource(url)
     .then(sirenClient.followEntity(['my-sub-entiy']))
     .then(sirenClient.actionTemplate('my-action'));
 ```
-
